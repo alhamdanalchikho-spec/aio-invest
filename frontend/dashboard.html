@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIO Invest | Alpha Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #050505;
+            color: #D4AF37;
+            overflow-x: hidden;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #8A6E2F 100%);
+            color: black;
+        }
+
+        .glass {
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .nav-tab {
+            cursor: pointer;
+            padding: 12px 20px;
+            border-radius: 12px;
+            transition: 0.3s;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+        }
+
+        .active-tab {
+            background: #D4AF37;
+            color: black;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .sniper-alert {
+            border-right: 4px solid #ff0000;
+            background: rgba(255, 0, 0, 0.05);
+        }
+
+        /* Transitions for tabs */
+        .tab-content {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .hidden {
+            display: none !important;
+            opacity: 0;
+        }
+
+        .show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <div id="dashboard" class="animate-in fade-in duration-700">
+        <nav class="glass sticky top-0 z-50 p-5 flex justify-between items-center px-10 border-b border-yellow-900/20">
+            <div class="flex items-center gap-6">
+                <span class="text-3xl font-black text-[#D4AF37]">AIO <span
+                        class="text-white font-light text-xl">INVEST</span></span>
+            </div>
+            <div class="flex items-center gap-6 text-left">
+                <div>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold">Commander</p>
+                    <p class="text-sm font-bold text-white uppercase" id="user-display">Alouch</p>
+                </div>
+                <button onclick="logout()"
+                    class="bg-red-950/20 p-3 rounded-2xl border border-red-900/30 text-red-500 hover:bg-red-600 hover:text-white transition">خروج
+                    ✕</button>
+            </div>
+        </nav>
+
+        <main class="p-8 max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <aside class="lg:col-span-3">
+                <div class="glass p-6 rounded-[30px] border border-gray-800 sticky top-[100px]">
+                    <p class="text-[10px] text-gray-500 mb-6 px-2 uppercase tracking-widest">أقسام القائد</p>
+                    <div onclick="showTab('summary')" class="nav-tab active-tab" id="tab-summary">🏢 ملخص السوق</div>
+                    <div onclick="showTab('sniper')" class="nav-tab" id="tab-sniper">🎯 نظام القنص (Sniper)</div>
+                    <div onclick="showTab('real')" class="nav-tab" id="tab-real">🏠 العقارات والحصص</div>
+                    <div onclick="showTab('startup')" class="nav-tab" id="tab-startup">🚀 الاستثمار الملائكي (VC)</div>
+                </div>
+            </aside>
+
+            <section class="lg:col-span-9 space-y-8">
+                <!-- Market Summary Tab -->
+                <div id="content-summary" class="tab-content show">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <!-- Bitcoin Live -->
+                        <div class="glass p-8 rounded-[35px] border-l-8 border-yellow-500">
+                            <h3 class="text-gray-400 text-xs mb-2 font-bold flex justify-between">
+                                Bitcoin (Live)
+                                <span
+                                    class="bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded text-[10px] uppercase animate-pulse">Live</span>
+                            </h3>
+                            <p class="text-3xl font-black text-white" id="btc-live">...</p>
+                            <p class="text-xs mt-2" id="btc-change">...</p>
+                        </div>
+
+                        <!-- Gold Live -->
+                        <div class="glass p-8 rounded-[35px] border-l-8 border-yellow-600">
+                            <h3 class="text-gray-400 text-xs mb-2 font-bold flex justify-between">
+                                Gold 24K (Gram)
+                                <span
+                                    class="bg-yellow-600/20 text-yellow-600 px-2 py-0.5 rounded text-[10px] uppercase">Live</span>
+                            </h3>
+                            <p class="text-3xl font-black text-white" id="gold-live">...</p>
+                            <p class="text-xs mt-2 text-green-500" id="gold-trend">...</p>
+                        </div>
+
+                        <!-- Forex Live -->
+                        <div class="glass p-8 rounded-[35px] border-l-8 border-blue-500">
+                            <h3 class="text-gray-400 text-xs mb-2 font-bold flex justify-between">
+                                EUR/USD (Forex)
+                                <span
+                                    class="bg-blue-500/20 text-blue-500 px-2 py-0.5 rounded text-[10px] uppercase">Live</span>
+                            </h3>
+                            <p class="text-3xl font-black text-white" id="forex-live">...</p>
+                            <p class="text-xs mt-2 text-green-500" id="forex-change">...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sniper Tab -->
+                <div id="content-sniper" class="tab-content hidden">
+                    <div class="glass p-10 rounded-[40px] sniper-alert shadow-[0_0_50px_rgba(255,0,0,0.1)]">
+                        <div class="flex justify-between items-start mb-8">
+                            <div>
+                                <h2 class="text-3xl font-black text-red-500 mb-2 italic">SNIPER ALGORITHM V2.0</h2>
+                                <p class="text-gray-400 text-sm font-light">يتم الآن فحص السيولة والانخفاضات السريعة
+                                    للدخول المثالي.</p>
+                            </div>
+                            <div class="bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold animate-pulse">
+                                التوربين نشط</div>
+                        </div>
+
+                        <div class="card-inner p-6 bg-black rounded-3xl border border-red-900/30 mb-6 text-center">
+                            <p class="text-sm text-gray-400 mb-2 font-bold uppercase">حالة القناص الحالية:</p>
+                            <p id="sniper-status" class="text-2xl font-black">جاري الاتصال بالمحرك الخلفي...</p>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-white mb-4">الفرص المكتشفة:</h3>
+                        <div id="sniper-opportunities" class="grid grid-cols-1 gap-4">
+                            <!-- Injected via JS -->
+                            <div class="text-center text-gray-500 py-4 italic">لا يوجد انخفاضات حادة (Dips) حالياً.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real Estate Tab -->
+                <div id="content-real" class="tab-content hidden">
+                    <div class="glass p-10 rounded-[40px] border border-blue-500/30">
+                        <h2 class="text-3xl font-black text-blue-400 mb-8 italic">REAL ESTATE PORTFOLIO</h2>
+                        <div id="real-estate-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Startups / VC Tab -->
+                <div id="content-startup" class="tab-content hidden">
+                    <div class="glass p-10 rounded-[40px] border border-purple-500/30">
+                        <h2 class="text-3xl font-black text-purple-400 mb-8 italic">VENTURE CAPITAL & STARTUPS</h2>
+                        <div id="startups-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Sixth Sense Integrity Modal -->
+    <div id="integrity-modal"
+        class="fixed inset-0 bg-black/90 z-[100] hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="glass p-8 rounded-3xl max-w-lg w-full border border-gray-700 relative">
+            <button onclick="closeIntegrityModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white">✕</button>
+            <h2 class="text-2xl font-bold text-[#D4AF37] mb-4 text-center">محرك الحاسة السادسة</h2>
+            <div id="integrity-content" class="text-white space-y-4">
+                <!-- Content injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
