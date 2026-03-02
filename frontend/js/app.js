@@ -12,7 +12,7 @@ function handleLogin() {
         // Simulate secure connection delay for visual effect
         setTimeout(() => {
             sessionStorage.setItem("commander", "Alouch");
-            window.location.href = "dashboard";
+            window.location.href = "/dashboard";
         }, 2000);
     } else {
         alert("Access Denied. Unauthorized Commander ID.");
