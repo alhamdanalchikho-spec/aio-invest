@@ -1,14 +1,14 @@
-const API_URL = "http://127.0.0.1:8000/api";
+const API_URL = "/api";
 
 // 1. Login System (index.html)
 function handleLogin() {
     const u = document.getElementById('username').value;
     const p = document.getElementById('password').value;
-    
+
     // Simple Alpha Auth
-    if(u === "Alouch" || u === "admin") {
+    if (u === "Alouch" || u === "admin") {
         document.getElementById('loading-overlay').classList.remove('hidden');
-        
+
         // Simulate secure connection delay for visual effect
         setTimeout(() => {
             window.location.href = "dashboard.html";
@@ -25,7 +25,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (!cmdr) {
         window.location.href = "index.html";
     } else {
-        if(document.getElementById('user-display')) {
+        if (document.getElementById('user-display')) {
             document.getElementById('user-display').innerText = cmdr;
         }
         // Initial Fetch
@@ -46,16 +46,16 @@ function showTab(id) {
         c.classList.remove('show');
         setTimeout(() => c.classList.add('hidden'), 300); // Wait for fade out
     });
-    
+
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active-tab'));
-    
+
     setTimeout(() => {
         const target = document.getElementById('content-' + id);
         target.classList.remove('hidden');
         // Small delay to allow display:block to apply before changing opacity
         setTimeout(() => target.classList.add('show'), 50);
     }, 300);
-    
+
     document.getElementById('tab-' + id).classList.add('active-tab');
 }
 
@@ -76,7 +76,7 @@ async function fetchMarketData() {
     try {
         const response = await fetch(`${API_URL}/market`);
         const data = await response.json();
-        
+
         // Update Crypto (BTC)
         const btc = data.crypto.bitcoin;
         document.getElementById('btc-live').innerText = `$${btc.usd.toLocaleString()}`;
@@ -103,9 +103,9 @@ async function fetchSniperData() {
     try {
         const response = await fetch(`${API_URL}/sniper`);
         const data = await response.json();
-        
+
         document.getElementById('sniper-status').innerText = data.status;
-        
+
         const oppContainer = document.getElementById('sniper-opportunities');
         if (data.active_alerts && data.active_alerts.length > 0) {
             oppContainer.innerHTML = ''; // Clear default message
@@ -132,10 +132,10 @@ async function fetchSniperData() {
 }
 
 async function fetchPortfolioData() {
-     try {
+    try {
         const response = await fetch(`${API_URL}/portfolio`);
         const data = await response.json();
-        
+
         // Render Real Estate
         const reContainer = document.getElementById('real-estate-list');
         reContainer.innerHTML = '';
@@ -179,7 +179,7 @@ async function fetchPortfolioData() {
 async function runIntegrityCheck(assetName) {
     const modal = document.getElementById('integrity-modal');
     const content = document.getElementById('integrity-content');
-    
+
     modal.classList.remove('hidden');
     content.innerHTML = `<div class="text-center py-8"><div class="spinner mx-auto mb-4"></div><p class="text-gray-400">جاري فحص الأصل وتدقيق السيولة...</p></div>`;
 
@@ -197,9 +197,9 @@ async function runIntegrityCheck(assetName) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-        
+
         const result = await response.json();
-        
+
         let detailsHtml = result.details.map(d => `<p class="text-xs text-gray-300 mb-1">• ${d}</p>`).join('');
         if (detailsHtml === '') detailsHtml = '<p class="text-xs text-green-400">لا يوجد إشارات خطر. الأصل يبدو سليماً.</p>';
 

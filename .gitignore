@@ -3,3 +3,4 @@ __pycache__/
 .gemini/
 python_installer.exe
 .env
+.vercel
