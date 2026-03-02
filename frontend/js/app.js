@@ -2,17 +2,17 @@ const API_URL = "/api";
 
 // 1. Login System (index.html)
 function handleLogin() {
-    const u = document.getElementById('username').value;
+    const u = document.getElementById('username').value.trim().toLowerCase();
     const p = document.getElementById('password').value;
 
     // Simple Alpha Auth
-    if (u === "Alouch" || u === "admin") {
+    if (u === "alouch" || u === "admin") {
         document.getElementById('loading-overlay').classList.remove('hidden');
 
         // Simulate secure connection delay for visual effect
         setTimeout(() => {
-            window.location.href = "dashboard.html";
-            sessionStorage.setItem("commander", u);
+            sessionStorage.setItem("commander", "Alouch");
+            window.location.href = "dashboard";
         }, 2000);
     } else {
         alert("Access Denied. Unauthorized Commander ID.");
@@ -20,7 +20,7 @@ function handleLogin() {
 }
 
 // Check auth on dashboard load
-if (window.location.pathname.includes('dashboard.html')) {
+if (window.location.pathname.includes('dashboard')) {
     const cmdr = sessionStorage.getItem("commander");
     if (!cmdr) {
         window.location.href = "index.html";
